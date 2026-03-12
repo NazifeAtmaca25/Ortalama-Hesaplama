@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: Sabitler.anaRenk,
+        colorScheme: ColorScheme.light(primary: Sabitler.anaRenk),
         visualDensity: VisualDensity.adaptivePlatformDensity
       ),
       home: OrtalamaHesapla(),
