@@ -45,8 +45,16 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                buildContainer(DataHelper.letter, secilenHarf),
-                                buildContainer(DataHelper.credit, secilenKredi),
+                                buildContainer(DataHelper.letter, secilenHarf, (String? harf){
+                                  setState(() {
+                                    secilenHarf=harf!;
+                                  });
+                                }),
+                                buildContainer(DataHelper.credit, secilenKredi, (int? kredi){
+                                  setState(() {
+                                    secilenKredi=kredi!;
+                                  });
+                                }),
                                 IconButton(
                                   onPressed: () {
                                     if(formKey.currentState!.validate()){
@@ -89,7 +97,10 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                     ? ListView.builder(
                         itemCount: dersler.length,
                         itemBuilder: (context, index) {
-                          return Text(dersler[index].name);
+                          var ders=dersler[index];
+                          return ListTile(
+                            title: Text(ders.name ,style: TextStyle(),),
+                          );
                         },
                       )
                     : Padding(padding: EdgeInsetsGeometry.all(20),
@@ -102,7 +113,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     );
   }
 
-  Container buildContainer<T>(List<T> list, T secilen) {
+  Container buildContainer<T>(List<T> list, T secilen,ValueChanged<T?>? secilenSet) {
     return Container(
       padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 8),
       decoration: BoxDecoration(
@@ -117,11 +128,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                   DropdownMenuItem(value: harf, child: Text(harf.toString())),
             )
             .toList(),
-        onChanged: (T? e) {
-          setState(() {
-            secilen = e!;
-          });
-        },
+        onChanged: secilenSet,
         value: secilen,
       ),
     );
