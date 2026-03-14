@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:ortalama_hesapla/constant/sabitler.dart';
 import 'package:ortalama_hesapla/helper/data_helper.dart';
 import 'package:ortalama_hesapla/model/lesson.dart';
+import 'package:ortalama_hesapla/screens/ders_listesi.dart';
+import 'package:ortalama_hesapla/screens/dropdown_widget.dart';
+import 'package:ortalama_hesapla/screens/ortalama_goster.dart';
 
 class OrtalamaHesapla extends StatefulWidget {
   const OrtalamaHesapla({super.key});
@@ -16,7 +19,6 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
   var formKey = GlobalKey<FormState>();
   String secilenHarf = "AA";
   int secilenKredi = 1;
-  List<Lesson> dersler = [];
 
   @override
   Widget build(BuildContext context) {
@@ -46,34 +48,26 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                buildContainer(DataHelper.letter, secilenHarf, (
-                                  String? harf,
-                                ) {
+                                DropdownWidget(secilen: secilenHarf, list: DataHelper.letter,secilenSet: (harf){
                                   setState(() {
-                                    secilenHarf = harf!;
+                                    secilenHarf=harf!;
+                                  });
+                                },),
+                                DropdownWidget(secilen: secilenKredi, list: DataHelper.credit, secilenSet: (credit){
+                                  setState(() {
+                                    secilenKredi=credit!;
                                   });
                                 }),
-                                buildContainer(
-                                  DataHelper.credit,
-                                  secilenKredi,
-                                  (int? kredi) {
-                                    setState(() {
-                                      secilenKredi = kredi!;
-                                    });
-                                  },
-                                ),
                                 IconButton(
                                   onPressed: () {
                                     if (formKey.currentState!.validate()) {
                                       formKey.currentState!.save();
                                       setState(() {
-                                        dersler.add(
-                                          Lesson(
-                                            girilenDers,
-                                            DataHelper.getNote(secilenHarf),
-                                            secilenKredi.toDouble(),
-                                          ),
-                                        );
+                                        DataHelper.dersEkle(Lesson(
+                                          girilenDers,
+                                          DataHelper.getNote(secilenHarf),
+                                          secilenKredi.toDouble(),
+                                        ),);
                                       });
                                     }
                                   },
@@ -93,63 +87,18 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      children: [
-                        Text(
-                          "${dersler.length} Ders Girildi",
-                          style: TextStyle(color: renk, fontSize: 16),
-                        ),
-                        Text(
-                          ortalamaHesapla(
-                            dersler,
-                          ).toStringAsFixed(2).toString(),
-                          style: TextStyle(
-                            fontSize: 40,
-                            color: renk,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          "Ortalama",
-                          style: TextStyle(color: renk, fontSize: 16),
-                        ),
-                      ],
-                    ),
+                    child: OrtalamaGoster(),
                   ),
                 ],
               ),
               Expanded(
-                child: dersler.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: dersler.length,
-                        itemBuilder: (context, index) {
-                          var ders = dersler[index];
-                          return ListTile(
-                            leading: CircleAvatar(
-                              maxRadius: 25,
-                              backgroundColor: renk,
-                              child: Text(
-                                "${(ders.letter * ders.credit).toInt()}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 24,
-                                ),
-                              ),
-                            ),
-                            title: Text(ders.name),
-                            subtitle: Text(
-                              "${ders.credit} Kredi ve Not Değeri ${ders.letter}",
-                            ),
-                          );
-                        },
-                      )
-                    : Padding(
-                        padding: EdgeInsetsGeometry.all(20),
-                        child: Text(
-                          "Lütfen derslerinizi giriniz",
-                          style: TextStyle(color: renk, fontSize: 24),
-                        ),
-                      ),
+                child: DersListesi(onDissmis: (index){
+                  setState(() {
+                    print(index);
+                    DataHelper.tumDersler.removeAt(index);
+                    print(DataHelper.tumDersler);
+                  });
+                },)
               ),
             ],
           ),
@@ -206,17 +155,5 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     );
   }
 
-  double ortalamaHesapla(List<Lesson> dersler) {
-    double tumNotlar = 0;
-    double tumKrediler = 0;
 
-    if (dersler.isEmpty) return 0;
-
-    for (int i = 0; i < dersler.length; i++) {
-      tumNotlar = tumNotlar + (dersler[i].letter * dersler[i].credit);
-      tumKrediler += dersler[i].credit;
-    }
-
-    return tumNotlar / tumKrediler;
-  }
 }

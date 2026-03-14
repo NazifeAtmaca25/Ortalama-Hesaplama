@@ -1,4 +1,25 @@
+import 'package:ortalama_hesapla/model/lesson.dart';
+
 class DataHelper {
+  static List<Lesson> tumDersler=[];
+  static void dersEkle(Lesson ders){
+    tumDersler.add(ders);
+  }
+
+  static double ortalamaHesapla() {
+    double tumNotlar = 0;
+    double tumKrediler = 0;
+
+    if (DataHelper.tumDersler.isEmpty) return 0;
+
+    for (int i = 0; i < DataHelper.tumDersler.length; i++) {
+      tumNotlar = tumNotlar + (DataHelper.tumDersler[i].letter * DataHelper.tumDersler[i].credit);
+      tumKrediler += DataHelper.tumDersler[i].credit;
+    }
+
+    return tumNotlar / tumKrediler;
+  }
+
   static List<String> letter = [
     'AA',
     'BA',
