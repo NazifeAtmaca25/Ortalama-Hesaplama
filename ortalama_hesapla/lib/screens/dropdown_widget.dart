@@ -17,9 +17,9 @@ class _DropdownWidgetState<T> extends State<DropdownWidget<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 8),
+      padding: Sabitler.dropDownPadding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: Sabitler.borderRadius,
         color: renk.shade300.withValues(alpha: 0.3),
         border: Border.all(width: 0, style: BorderStyle.none),
       ),

@@ -33,25 +33,22 @@ class DersListesi extends StatelessWidget {
               backgroundColor: renk,
               child: Text(
                 "${(ders.letter * ders.credit).toInt()}",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
+                style: Sabitler.circleStyle,
               ),
             ),
-            title: Text(ders.name),
+            title: Text(ders.name,style: Sabitler.courseNameStyle,),
             subtitle: Text(
-              "${ders.credit} Kredi ve Not Değeri ${ders.letter}",
+              "${ders.credit} Kredi ve Not Değeri ${ders.letter}",style: Sabitler.ortalamaStyle,
             ),
           ),
         );
       },
     )
         : Padding(
-      padding: EdgeInsets.all(20),
+      padding: Sabitler.genelPadding,
       child: Text(
         "Lütfen dersinizi giriniz",
-        style: TextStyle(color: renk, fontSize: 24),
+        style: Sabitler.baslikStyle,
       ),
     );
   }

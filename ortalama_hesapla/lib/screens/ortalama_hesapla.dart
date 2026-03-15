@@ -30,7 +30,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:Sabitler.genelPadding,
           child: Column(
             children: [
               Row(
@@ -40,7 +40,7 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
                     child: Form(
                       key: formKey,
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: Sabitler.genelPadding,
                         child: Column(
                           children: [
                             _buildTextFormField(),
@@ -113,9 +113,9 @@ class _OrtalamaHesaplaState extends State<OrtalamaHesapla> {
     ValueChanged<T?>? secilenSet,
   ) {
     return Container(
-      padding: EdgeInsetsGeometry.symmetric(horizontal: 15, vertical: 8),
+      padding: Sabitler.dropDownPadding,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: Sabitler.borderRadius,
         color: renk.shade300.withValues(alpha: 0.3),
         border: Border.all(width: 0, style: BorderStyle.none),
       ),

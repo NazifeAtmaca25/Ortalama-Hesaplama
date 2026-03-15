@@ -8,25 +8,20 @@ class OrtalamaGoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MaterialColor renk = Sabitler.anaRenk;
     return  Column(
       children: [
         Text(
           "${DataHelper.tumDersler.length} Ders Girildi",
-          style: TextStyle(color: renk, fontSize: 16),
+          style: Sabitler.ortalamaStyle,
         ),
         Text(
           DataHelper.ortalamaHesapla(
           ).toStringAsFixed(2),
-          style: TextStyle(
-            fontSize: 40,
-            color: renk,
-            fontWeight: FontWeight.bold,
-          ),
+          style: Sabitler.ortalamaBuyukStyle,
         ),
         Text(
           "Ortalama",
-          style: TextStyle(color: renk, fontSize: 16),
+          style: Sabitler.ortalamaStyle,
         ),
       ],
     );
